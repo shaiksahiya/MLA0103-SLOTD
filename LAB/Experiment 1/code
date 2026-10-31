@@ -1,0 +1,46 @@
+from collections import deque
+
+def bfs(graph, start, goal):
+    queue = deque([[start]])
+    visited = set()
+
+    while queue:
+        path = queue.popleft()
+        node = path[-1]
+
+        if node == goal:
+            return path
+
+        if node not in visited:
+            visited.add(node)
+
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    new_path = path + [neighbor]
+                    queue.append(new_path)
+
+    return None
+
+
+# Building represented as an unweighted graph
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F'],
+    'D': ['B'],
+    'E': ['B', 'F'],
+    'F': ['C', 'E']
+}
+
+# Starting and destination rooms
+start = 'A'
+goal = 'F'
+
+# Find shortest path using BFS
+path = bfs(graph, start, goal)
+
+if path:
+    print("Shortest path:", " -> ".join(path))
+    print("Number of steps:", len(path) - 1)
+else:
+    print("No path found!")
